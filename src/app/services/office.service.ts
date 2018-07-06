@@ -326,7 +326,9 @@ export class OfficeService {
       cc.color = color;
       cc.cannotEdit = cannotEdit;
       cc.cannotDelete = cannotDelete;
-      cc.placeholderText = placeholder;
+      if (placeholder) {
+        cc.placeholderText = placeholder;
+      }
       // cc.style = style;
       context.load(cc, 'id');
 

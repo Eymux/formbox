@@ -72,6 +72,7 @@ import { KomfortdruckComponent } from './components/komfortdruck/komfortdruck.co
 import { OnCreateDirective } from './directives/on-create.directive';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { composeWithDevTools } from 'remote-redux-devtools';
+import { FormExpressionService } from './services/form-expression.service';
 
 @NgModule({
   declarations: [
@@ -140,7 +141,8 @@ import { composeWithDevTools } from 'remote-redux-devtools';
     SachleitendeverfuegungActions,
     SachleitendeverfuegungEpics,
     InitActions,
-    InitEpics
+    InitEpics,
+    FormExpressionService
   ],
   bootstrap: [AppComponent]
 })
@@ -159,8 +161,10 @@ export class AppModule {
     if (environment.production || environment.test) {
       ngRedux.configureStore(rootReducer, INITIAL_STATE, middleware);
     } else {
-      const composeEnhancers = composeWithDevTools({ realtime: true, maxAge: 999, hostname: environment.reduxRemoteUrl,
-                                                     port: environment.reduxRemotePort, secure: environment.reduxRemoteSecure });
+      const composeEnhancers = composeWithDevTools({
+        realtime: true, maxAge: 999, hostname: environment.reduxRemoteUrl,
+        port: environment.reduxRemotePort, secure: environment.reduxRemoteSecure
+      });
       ngRedux.provideStore(createStore(rootReducer, INITIAL_STATE, composeEnhancers(applyMiddleware(...middleware))));
     }
 

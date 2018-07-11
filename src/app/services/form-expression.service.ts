@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import * as expressions from 'expressions-js';
+import { ExpressionService } from './expression.service';
 
 @Injectable()
 export class FormExpressionService {
 
-  constructor() { /* Leer */ }
+  constructor(private expressions: ExpressionService) { /* Leer */ }
 
   evaluate(controls: { 'id': number, 'ccid': number, 'label': string, 'autofill': string }[]):
     { ccid: number, value: string }[] {
@@ -12,6 +12,7 @@ export class FormExpressionService {
 
     // Filtert alle Autofills, die keine Funktion enthalten.
     let fn = controls.filter(it => {
+      debugger
       if (!it.autofill.startsWith('=')) {
         result.push({ ccid: it.ccid, label: it.label, value: it.autofill });
 
@@ -27,15 +28,16 @@ export class FormExpressionService {
       n = fn.length;
       fn = fn.filter(c => {
         const f = c.autofill.replace('=', '').trim();
-        const pf = expressions.parse(f, []);
+        const pf = this.expressions.parse(f);
         const ctx = result.reduce((o, it) => {
           o[it.label] = it.value;
 
           return o;
         }, {});
+        debugger
         const ret = pf.call(ctx);
 
-        if (ret !== '#NAME?') {
+        if (ret !== '#NAME?' && ret !== 'n. def.') {
           result.push({ ccid: c.ccid, label: c.label, value: String(ret) });
 
           return false;

@@ -9,7 +9,7 @@ import { HttpModule } from '@angular/http';
 import { OfficeService } from '../../../../src/app/services/office.service';
 import { NgReduxModule } from '@angular-redux/store';
 import { TemplateMockService } from '../../services/mocks/template-mock.service';
-import { ExpressionsService } from '../../../../src/app/services/expressions.service';
+import { DocumentExpressionsService } from '../../../../src/app/services/document-expressions.service';
 
 describe('Template epics', () => {
   beforeEach(() => {
@@ -22,7 +22,7 @@ describe('Template epics', () => {
         { provide: TemplateService, useClass: TemplateMockService },
         TemplateActions,
         TemplateEpics,
-        ExpressionsService
+        DocumentExpressionsService
       ]
     });
   });
@@ -113,8 +113,8 @@ describe('Template epics', () => {
     )));
 
   it('executing insertFrag',
-    async(inject([TemplateEpics, ExpressionsService],
-      (templateEpics: TemplateEpics, expr: ExpressionsService) => {
+    async(inject([TemplateEpics, DocumentExpressionsService],
+      (templateEpics: TemplateEpics, expr: DocumentExpressionsService) => {
         const spy = spyOn(expr, 'eval').and.returnValue(Promise.resolve(undefined));
 
         const action = TemplateActions.EXECUTE_COMMAND.started({ id: 10, cmd: 'insertFrag(\'fragment\')' });

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
-import * as expressions from 'expressions-js';
 import * as dateFormat from 'dateformat';
 
 import { FormBoxState } from '../store/states/formbox-state';
 import { Absender } from '../storage/absender';
 import { OverrideFrag } from '../store/actions/template-actions';
 import { TemplateService } from './template.service';
+import { ExpressionService } from './expression.service';
 
 /**
  * Klasse zum Parsen und Ausführen von Javascript-Expressions.
@@ -19,8 +19,9 @@ import { TemplateService } from './template.service';
  * werden.
  */
 @Injectable()
-export class ExpressionsService {
+export class DocumentExpressionsService {
   ctx: Context = new Context(this.templates);
+  globals: {};
 
   /**
    * Der Formatter kann dazu verwendet werden ein Datum über einen Formatstring
@@ -37,7 +38,8 @@ export class ExpressionsService {
 
   constructor(
     private store: NgRedux<FormBoxState>,
-    private templates: TemplateService
+    private templates: TemplateService,
+    private expressions: ExpressionService
   ) {
     store.select<OverrideFrag[]>(['template', 'overrideFrags']).subscribe(overrideFrags => {
       this.ctx.overrideFrags = overrideFrags;
@@ -48,7 +50,7 @@ export class ExpressionsService {
     store.select<Absender>(['absenderliste', 'selected']).subscribe(absender => {
       if (absender) {
         Object.keys(absender).forEach(key => {
-          expressions.globals[key] = absender[key];
+          this.globals[key] = absender[key];
         });
       }
     });
@@ -62,7 +64,7 @@ export class ExpressionsService {
    * in der GUI verwendet werden.
    */
   parse(expr: string): FunctionConstructor {
-    return expressions.parse(expr, expressions.globals, this.formmatters);
+    return this.expressions.parse(expr, this.globals, this.formmatters);
   }
 
   /**

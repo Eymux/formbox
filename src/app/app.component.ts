@@ -10,7 +10,7 @@ import { TemplateService } from './services/template.service';
 import { OfficeService } from './services/office.service';
 import { TemplateActions } from './store/actions/template-actions';
 import { AbsenderlisteActions } from './store/actions/absenderliste-actions';
-import { ExpressionsService } from './services/expressions.service';
+import { DocumentExpressionsService } from './services/document-expressions.service';
 import { Absender } from './storage/absender';
 import { StorageActions } from './store/actions/storage-actions';
 import { environment } from '../environments/environment';
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
     private absenderlisteActions: AbsenderlisteActions,
     private storageActions: StorageActions,
     private storage: StorageService,
-    private expressions: ExpressionsService,
+    private expressions: DocumentExpressionsService,
     private formdata: FormDataService,
     private formularEditorActions: FormularEditorActions,
     private log: Logger) {

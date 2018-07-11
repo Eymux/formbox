@@ -28,7 +28,7 @@ import { AbsenderlisteActions } from './store/actions/absenderliste-actions';
 import { AbsenderlisteService } from './services/absenderliste.service';
 import { RootEpic } from './store/middleware/root-epic';
 import { AbsenderlisteEpics } from './store/middleware/absenderliste-epics';
-import { ExpressionsService } from './services/expressions.service';
+import { DocumentExpressionsService } from './services/document-expressions.service';
 import { LDAPService } from './services/ldap.service';
 import { LDAPEpics } from './store/middleware/ldap-epics';
 import { LDAPActions } from './store/actions/ldap-actions';
@@ -73,6 +73,7 @@ import { OnCreateDirective } from './directives/on-create.directive';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { composeWithDevTools } from 'remote-redux-devtools';
 import { FormExpressionService } from './services/form-expression.service';
+import { ExpressionService } from './services/expression.service';
 
 @NgModule({
   declarations: [
@@ -125,7 +126,7 @@ import { FormExpressionService } from './services/form-expression.service';
     DialogService,
     DocumentTreeViewEpics,
     { provide: LDAPService, useClass: environment.test ? LDAPMockService : LDAPService },
-    ExpressionsService,
+    DocumentExpressionsService,
     ExpressionEditorCommandsEpics,
     { provide: OfficeService, useClass: environment.test ? OfficeMockService : OfficeService },
     FormDataService,
@@ -142,6 +143,7 @@ import { FormExpressionService } from './services/form-expression.service';
     SachleitendeverfuegungEpics,
     InitActions,
     InitEpics,
+    ExpressionService,
     FormExpressionService
   ],
   bootstrap: [AppComponent]

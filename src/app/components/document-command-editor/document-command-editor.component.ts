@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { ExpressionEditorCommandsActions } from '../../store/actions/expression-editor-commands-actions';
 import { DocumentCommand } from '../../store/states/expression-editor-commands-state';
-import { ExpressionsService } from '../../services/expressions.service';
+import { DocumentExpressionsService } from '../../services/document-expressions.service';
 
 /**
  * Steuerelement mit zwei Eingabefeldern, mit dem die Inhalte eines Dokumentenkommandos
@@ -22,7 +22,7 @@ export class DocumentCommandEditorComponent implements OnInit {
 
   model: { index: number, cmd: DocumentCommand } = { index: -1, cmd: undefined };
 
-  constructor(private actions: ExpressionEditorCommandsActions, private expressions: ExpressionsService) { }
+  constructor(private actions: ExpressionEditorCommandsActions, private expressions: DocumentExpressionsService) { }
 
   ngOnInit(): void {
     this.selected.subscribe(c => {

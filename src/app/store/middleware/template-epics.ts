@@ -14,7 +14,7 @@ import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/observable/concat';
 import 'rxjs/add/observable/forkJoin';
 
-import { ExpressionsService } from '../../services/expressions.service';
+import { DocumentExpressionsService } from '../../services/document-expressions.service';
 import { DocumentCommand, TemplateActions } from '../actions/template-actions';
 import { FormBoxState } from '../states/formbox-state';
 
@@ -26,7 +26,7 @@ export class TemplateEpics {
   constructor(
     private log: Logger,
     private templates: TemplateService,
-    private expr: ExpressionsService
+    private expr: DocumentExpressionsService
   ) { }
 
   /**
@@ -108,13 +108,13 @@ export class TemplateEpics {
 
   openingTemplateFromFileSystem = (action: ActionsObservable<any>) => {
     return action.ofType(TemplateActions.OPEN_TEMPLATE_FROM_FS.started)
-    .mergeMap(({ payload }, n: number) => {
-      return this.templates.openDocument(payload).then(() => {
-        const act = TemplateActions.GET_NEXT_COMMAND({});
+      .mergeMap(({ payload }, n: number) => {
+        return this.templates.openDocument(payload).then(() => {
+          const act = TemplateActions.GET_NEXT_COMMAND({});
 
-        return act;
+          return act;
+        });
       });
-    });
   }
 
   /**

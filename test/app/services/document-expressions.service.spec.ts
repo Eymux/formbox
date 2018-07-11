@@ -1,6 +1,6 @@
 import { async, inject, TestBed } from '@angular/core/testing';
 
-import { ExpressionsService } from '../../../src/app/services/expressions.service';
+import { DocumentExpressionsService } from '../../../src/app/services/document-expressions.service';
 import { NgReduxModule } from '@angular-redux/store';
 import { TemplateActions } from '../../../src/app/store/actions/template-actions';
 import { TemplateService } from '../../../src/app/services/template.service';
@@ -21,17 +21,17 @@ describe('ExpressionsService', () => {
       providers: [
         TemplateActions,
         { provide: TemplateService, useClass: TemplateMockService },
-        ExpressionsService,
+        DocumentExpressionsService,
         OfficeService
       ]
     });
   });
 
-  it('should be created', inject([ExpressionsService], (service: ExpressionsService) => {
+  it('should be created', inject([DocumentExpressionsService], (service: DocumentExpressionsService) => {
     expect(service).toBeTruthy();
   }));
 
-  it('evaluate insertFrag', async(inject([ExpressionsService], (service: ExpressionsService) => {
+  it('evaluate insertFrag', async(inject([DocumentExpressionsService], (service: DocumentExpressionsService) => {
     const spy = spyOn(service.ctx, 'insertFrag').and.callThrough();
     const ret = service.eval('insertFrag(\'Externer_Briefkopf\')', 0);
 
@@ -39,13 +39,13 @@ describe('ExpressionsService', () => {
     expect(spy).toHaveBeenCalledWith('Externer_Briefkopf');
   })));
 
-  it('evaluate overrideFrag', async(inject([ExpressionsService], (service: ExpressionsService) => {
+  it('evaluate overrideFrag', async(inject([DocumentExpressionsService], (service: DocumentExpressionsService) => {
     const ret = service.eval('overrideFrag([{oldFrag: \'Adresse_Angaben\', newFrag: \'Empfaengerfeld\'}])', 0);
 
     ret.then(() => expect(service.ctx.overrideFrags).toEqual([{ oldFrag: 'Adresse_Angaben', newFrag: 'Empfaengerfeld' }]));
   })));
 
-  it('evaluate insertFrag with empty override', async(inject([ExpressionsService], (service: ExpressionsService) => {
+  it('evaluate insertFrag with empty override', async(inject([DocumentExpressionsService], (service: DocumentExpressionsService) => {
     const spy = spyOn<any>(service.ctx, 'getOverrideFrag').and.callThrough();
     service.eval('overrideFrag([{oldFrag: \'test\', newFrag: \'\'}])', 0).then(() => {
       const ret = service.eval('insertFrag(\'test\')', 1);

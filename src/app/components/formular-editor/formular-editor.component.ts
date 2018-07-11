@@ -39,7 +39,7 @@ export class FormularEditorComponent implements OnInit, OnDestroy {
     },
     actionMapping: {
       mouse: {
-        drop: (tree, node, $event, {from, to}) => {
+        drop: (tree, node, $event, { from, to }) => {
           // Es muss zwischen den Fällen if) neues Control und else) Control verschieben unterschieden werden
           if (from.type) {
             this.actions.add(from.type, to.parent.data.id, to.index);

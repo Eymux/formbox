@@ -81,8 +81,9 @@ export class FormularEditorEpics {
   creatingForm = (action: ActionsObservable<any>) => {
     return action.ofType(FormularEditorActions.CREATE_FORM.started)
       .mergeMap((value, n) => {
+        debugger
         const form = this.formular.createEmptyForm();
-        const act = FormularEditorActions.CREATE_FORM.done({params: {}, result: form});
+        const act = FormularEditorActions.CREATE_FORM.done({ params: {}, result: form });
 
         return Observable.of(act);
       });
@@ -94,9 +95,9 @@ export class FormularEditorEpics {
    */
   creatingControl = (action: ActionsObservable<any>) => {
     return action.ofType(FormularEditorActions.ADD_CONTROL.started)
-      .mergeMap(({payload}, n) => {
+      .mergeMap(({ payload }, n) => {
         return this.formular.createFormControl(payload.type).then(control => {
-          const act = FormularEditorActions.ADD_CONTROL.done({params: payload, result: control});
+          const act = FormularEditorActions.ADD_CONTROL.done({ params: payload, result: control });
 
           return act;
         });
@@ -109,9 +110,9 @@ export class FormularEditorEpics {
    */
   deletingControl = (action: ActionsObservable<any>) => {
     return action.ofType(FormularEditorActions.REMOVE_CONTROL.started)
-      .mergeMap(({payload}, n) => {
+      .mergeMap(({ payload }, n) => {
         return this.formular.deleteControl(payload.ccid).then(() => {
-          const act = FormularEditorActions.REMOVE_CONTROL.done({params: payload, result: {}});
+          const act = FormularEditorActions.REMOVE_CONTROL.done({ params: payload, result: {} });
 
           return act;
         });
@@ -123,7 +124,7 @@ export class FormularEditorEpics {
    */
   editingControl = (action: ActionsObservable<any>) => {
     return action.ofType(FormularEditorActions.ADD_CONTROL.done, FormularEditorActions.CREATE_FORM.done)
-      .mergeMap(({payload}, n) => {
+      .mergeMap(({ payload }, n) => {
         const act = FormularEditorActions.EDIT_CONTROL(payload.result.id);
 
         return Observable.of(act);
@@ -135,7 +136,7 @@ export class FormularEditorEpics {
    */
   hidingControl = (action: ActionsObservable<any>) => {
     return action.ofType(FormularEditorActions.UPDATE_CONTROL, FormularEditorActions.REMOVE_CONTROL.done)
-      .mergeMap(({payload}, n) => {
+      .mergeMap(({ payload }, n) => {
         const id = payload.control ? payload.control.id : payload.params.id;
         const act = FormularEditorActions.HIDE_CONTROL(id);
 

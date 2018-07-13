@@ -8,7 +8,7 @@ import { Logger } from '@nsalaun/ng-logger';
  */
 @Directive({
   selector: '[appLdapFilterValidator]',
-  providers: [{provide: NG_VALIDATORS, useExisting: LdapFilterValidatorDirective, multi: true}]
+  providers: [{ provide: NG_VALIDATORS, useExisting: LdapFilterValidatorDirective, multi: true }]
 })
 export class LdapFilterValidatorDirective implements Validator {
 
@@ -26,6 +26,6 @@ export class LdapFilterValidatorDirective implements Validator {
       return undefined;
     }
 
-    return { filter: { value: this.filter, error: 'Alle Felder sind leer'}};
+    return { filter: { value: this.filter, error: 'Alle Felder sind leer' } };
   }
 }

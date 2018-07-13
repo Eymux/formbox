@@ -17,14 +17,14 @@ export class FormularGuiEpics {
 
   updateingFormGuiValues = (action: ActionsObservable<any>, store: NgRedux<FormBoxState>) => {
     return action.ofType(FormularGuiActions.FILL_VALUES.started)
-      .mergeMap((payload, n) => {
-        return this.formGuiService.updateFormGuiValues(store.getState().formularEditor.form).then(() => {
-          const act = FormularGuiActions.FILL_VALUES.done({ params: {}, result: undefined });
+      .switchMap((payload, n) => {
+        return Observable.from(this.formGuiService.updateFormGuiValues(store.getState().formularEditor.form))
+          .switchMap(form => {
+            const act1 = FormularGuiActions.FILL_VALUES.done({ params: {}, result: form });
+            const act2 = FormularGuiActions.RECALCULATE({});
 
-          return act;
-        }).catch(err => {
-          this.log.error(err);
-        });
+            return Observable.concat(Observable.of(act1), Observable.of(act2));
+          });
       });
   }
 

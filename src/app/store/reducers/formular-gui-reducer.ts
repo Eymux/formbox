@@ -11,5 +11,5 @@ const updateValues = (state: FormularEditorState, form: Form): FormularEditorSta
 };
 
 export const formularGuiReducer: Reducer<FormularEditorState> = reducerWithInitialState(INITIAL_STATE)
-    .case(FormularGuiActions.FILL_VALUES.done, (state, result) => updateValues(state, result.result))
+    .case(FormularGuiActions.FILL_VALUES.done, (state, payload) => updateValues(state, payload.result))
     .build();

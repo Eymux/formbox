@@ -13,7 +13,7 @@ export class FormExpressionService {
     // Filtert alle Autofills, die keine Funktion enthalten.
     let fn = controls.filter(it => {
       debugger
-      if (!it.autofill.startsWith('=')) {
+      if (it.autofill && !it.autofill.startsWith('=')) {
         result.push({ ccid: it.ccid, label: it.label, value: it.autofill });
 
         return false;

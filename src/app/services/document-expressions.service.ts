@@ -21,7 +21,7 @@ import { ExpressionService } from './expression.service';
 @Injectable()
 export class DocumentExpressionsService {
   ctx: Context = new Context(this.templates);
-  globals: {};
+  globals = {};
 
   /**
    * Der Formatter kann dazu verwendet werden ein Datum über einen Formatstring

@@ -13,6 +13,7 @@ const actionCreator = actionCreatorFactory();
 export class FormularGuiActions {
   static FILL_VALUES = actionCreator.async<any, Form>('FILL_VALUES');
   static UPDATE_CONTENT_CONTROL_TEXT = actionCreator<{ text: string, ccid: number }>('UPDATE_CONTENT_CONTROL_TEXT');
+  static RECALCULATE = actionCreator<any>('RECALCULATE');
 
   constructor(private ngRedux: NgRedux<FormularEditorState>) { }
 
@@ -24,6 +25,12 @@ export class FormularGuiActions {
 
   updateContentControlText(text: string, ccid: number): any {
     const action = FormularGuiActions.UPDATE_CONTENT_CONTROL_TEXT({ text: text, ccid: ccid });
+
+    return this.ngRedux.dispatch(action);
+  }
+
+  recalculate(): any {
+    const action = FormularGuiActions.RECALCULATE({});
 
     return this.ngRedux.dispatch(action);
   }

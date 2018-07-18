@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { OfficeService } from './office.service';
-import { Form } from '../data/forms/form';
-import { FormXmlParserService } from './form-xml-parser.service';
 import { Logger } from '@nsalaun/ng-logger';
+
+import { Form } from '../data/forms/form';
+import { FormValue } from '../data/forms/form-value';
+import { FormValuesXmlParserService } from './form-values-xml-parser.service';
+import { FormXmlParserService } from './form-xml-parser.service';
+import { OfficeService } from './office.service';
 
 /**
  * Service zum Bearbeiten von Formulardefinitionen.
@@ -10,10 +13,12 @@ import { Logger } from '@nsalaun/ng-logger';
 @Injectable()
 export class FormDataService {
   static readonly namespace = 'http://www.muenchen.de/formbox/forms';
+  static readonly namespaceData = 'http://www.muenchen.de/formbox/formvalues';
 
   constructor(
     private office: OfficeService,
     private formXmlParser: FormXmlParserService,
+    private formvalueXmlParser: FormValuesXmlParserService,
     private log: Logger
   ) { }
 
@@ -39,6 +44,26 @@ export class FormDataService {
         });
       } else {
         return Promise.reject('No FormData found.');
+      }
+    });
+  }
+
+  async writeValues(values: FormValue[]): Promise<string> {
+    return this.office.deleteXmlByNamespace(FormDataService.namespaceData).then(() => {
+      const xml = this.formXmlParser.createXml(values);
+
+      return this.office.addXml(xml);
+    });
+  }
+
+  async readValues(): Promise<FormValue[]> {
+    return this.office.getXmlIdsByNamespace(FormDataService.namespaceData).then(ids => {
+      if (ids.length > 0) {
+        return this.office.getXmlById(ids.pop()).then(xml => {
+          return this.formvalueXmlParser.parse(xml);
+        });
+      } else {
+        return Promise.resolve([]);
       }
     });
   }

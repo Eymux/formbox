@@ -1,14 +1,14 @@
+import '../data/forms/forms';
+
 import { Injectable } from '@angular/core';
+import { Logger } from '@nsalaun/ng-logger';
 import { parser, QualifiedTag, SAXParser, Tag } from 'sax';
 import * as format from 'xml-formatter';
-import { Logger } from '@nsalaun/ng-logger';
-import '../data/forms/forms';
-import { getXmlClass } from '../decorators/xml.decorators';
-import { Form } from '../data/forms/form';
-import { Container } from '../data/forms/container';
-import { Tabs } from '../data/forms/tabs';
-import { Tab } from '../data/forms/tab';
+
 import { Combobox } from '../data/forms/combobox';
+import { Form } from '../data/forms/form';
+import { FormValue } from '../data/forms/form-value';
+import { getXmlClass } from '../decorators/xml.decorators';
 
 /**
  * Parser für Formulardefinition in XML.
@@ -45,8 +45,16 @@ export class FormXmlParserService {
    *
    * @param pretty Formatiert das XML.
    */
-  createXml(form: Form, pretty = false): string {
-    let xml = form.toXml();
+  createXml(f: Form | FormValue[], pretty = false): string {
+    let xml;
+    if (f instanceof Form) {
+      xml = f.toXml();
+    } else {
+      xml = '<formvalues xmlns="http://www.muenchen.de/formbox/formvalues" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"';
+      xml += ' xsi:schemaLocation="http://www.muenchen.de/formbox/formvalues http://www.muenchen.de/formbox/formvalues.xsd">';
+      f.forEach(it => xml += it.toXml());
+      xml += '</formvalues>';
+    }
     if (pretty) {
       xml = format(xml);
     }
@@ -72,7 +80,7 @@ export class FormXmlParserService {
       this.push(o);
     } else {
       // Alle Tags, die sich keiner Klasse zuordnen lassen, sind Properties.
-      if (this.currentContainer[ node.name ] && this.currentContainer[ node.name ].constructor === Array) {
+      if (this.currentContainer[node.name] && this.currentContainer[node.name].constructor === Array) {
         return;
       }
       if (node.name !== 'pages') {
@@ -90,9 +98,9 @@ export class FormXmlParserService {
     }
 
     if (!isNaN(text)) {
-      this.currentContainer[ this.currentProperty ] = Number(text);
+      this.currentContainer[this.currentProperty] = Number(text);
     } else {
-      this.currentContainer[ this.currentProperty ] = text;
+      this.currentContainer[this.currentProperty] = text;
     }
   }
 

@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { combineEpics } from 'redux-observable';
-import { TemplateEpics } from './template-epics';
+
 import { AbsenderlisteEpics } from './absenderliste-epics';
-import { LDAPEpics } from './ldap-epics';
-import { StorageEpics } from './storage-epics';
-import { ExpressionEditorCommandsEpics } from './expression-editor-commands-epics';
-import { DocumentTreeViewEpics } from './document-treeview-epics';
 import { DialogEpics } from './dialog-epics';
+import { DocumentTreeViewEpics } from './document-treeview-epics';
+import { ExpressionEditorCommandsEpics } from './expression-editor-commands-epics';
 import { FormularEditorEpics } from './formular-editor-epics';
-import { SachleitendeverfuegungEpics } from './sachleitendeverfuegung-epics';
-import { InitEpics } from './init-epics';
 import { FormularGuiEpics } from './formular-gui-epics';
+import { InitEpics } from './init-epics';
+import { LDAPEpics } from './ldap-epics';
+import { SachleitendeverfuegungEpics } from './sachleitendeverfuegung-epics';
+import { StorageEpics } from './storage-epics';
+import { TemplateEpics } from './template-epics';
 
 @Injectable()
 export class RootEpic {
@@ -68,6 +69,7 @@ export class RootEpic {
     this.slvEpics.deleting,
     this.slvEpics.printing,
     this.initEpics.initialisingSLV,
+    this.initEpics.initialisingFormValues,
     this.formularGuiEpics.updateingFormGuiValues,
     this.formularGuiEpics.updateingContentControlText,
     this.slvEpics.insertingZuleitung,

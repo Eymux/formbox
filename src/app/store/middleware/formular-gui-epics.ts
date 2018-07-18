@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { ActionsObservable } from 'redux-observable';
 import { NgRedux } from '@angular-redux/store';
+import { Injectable } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
+import { ActionsObservable } from 'redux-observable';
 import { Observable } from 'rxjs/Observable';
-import { FormBoxState } from '../states/formbox-state';
+
 import { FormularGuiService } from '../../services/formular-gui.service';
 import { FormularGuiActions } from '../actions/formular-gui-actions';
-import { Form } from '../../data/forms/form';
+import { FormBoxState } from '../states/formbox-state';
 
 @Injectable()
 export class FormularGuiEpics {
@@ -19,8 +19,8 @@ export class FormularGuiEpics {
     return action.ofType(FormularGuiActions.FILL_VALUES.started)
       .switchMap((payload, n) => {
         return Observable.from(this.formGuiService.updateFormGuiValues(store.getState().formularEditor.form))
-          .switchMap(form => {
-            const act1 = FormularGuiActions.FILL_VALUES.done({ params: {}, result: form });
+          .switchMap(values => {
+            const act1 = FormularGuiActions.FILL_VALUES.done({ params: {}, result: values });
             const act2 = FormularGuiActions.RECALCULATE({});
 
             return Observable.concat(Observable.of(act1), Observable.of(act2));

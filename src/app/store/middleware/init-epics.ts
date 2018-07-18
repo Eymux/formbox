@@ -1,31 +1,29 @@
-import { Injectable } from '@angular/core';
-import { ActionsObservable, combineEpics } from 'redux-observable';
-import { NgRedux } from '@angular-redux/store';
-import { Logger } from '@nsalaun/ng-logger';
-
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/concat';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/observable/fromPromise';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/ignoreElements';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/observable/concat';
-import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
 
-import { InitActions } from '../actions/init-actions';
-import { SachleitendeverfuegungActions } from '../actions/sachleitendeverfuegung-actions';
-import { SachleitendeVerfuegungService } from '../../services/sachleitende-verfuegung.service';
+import { Injectable } from '@angular/core';
+import { Logger } from '@nsalaun/ng-logger';
+import { ActionsObservable } from 'redux-observable';
+
 import { SachleitendeVerfuegung } from '../../data/slv/sachleitende-verfuegung';
+import { FormularGuiService } from '../../services/formular-gui.service';
+import { SachleitendeVerfuegungService } from '../../services/sachleitende-verfuegung.service';
+import { InitActions } from '../actions/init-actions';
 
 @Injectable()
 export class InitEpics {
   constructor(
     private log: Logger,
     private slv: SachleitendeVerfuegungService,
-    private slvActions: SachleitendeverfuegungActions
+    private formgui: FormularGuiService
   ) { }
 
   initialisingSLV = (action: ActionsObservable<any>) => {
@@ -52,6 +50,17 @@ export class InitEpics {
 
           return act;
         });
+      });
+  }
+
+  initialisingFormValues = (action: ActionsObservable<any>) => {
+    return action.ofType(InitActions.INIT_FORMVALUES.started)
+      .mergeMap(() => {
+        return this.formgui.readFormValues().then(values => {
+          const act = InitActions.INIT_FORMVALUES.done({ params: {}, result: values });
+
+          return act;
+        })
       });
   }
 }

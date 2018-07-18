@@ -1,15 +1,15 @@
-import { TemplateActions } from '../../../../src/app/store/actions/template-actions';
-import { async, inject, TestBed } from '@angular/core/testing';
-import { TemplateEpics } from '../../../../src/app/store/middleware/template-epics';
-import { ActionsObservable } from 'redux-observable';
-import { NgLoggerModule } from '@nsalaun/ng-logger';
-import { environment } from '../../../../src/environments/environment';
-import { TemplateService } from '../../../../src/app/services/template.service';
-import { HttpModule } from '@angular/http';
-import { OfficeService } from '../../../../src/app/services/office.service';
 import { NgReduxModule } from '@angular-redux/store';
-import { TemplateMockService } from '../../services/mocks/template-mock.service';
+import { async, inject, TestBed } from '@angular/core/testing';
+import { NgLoggerModule } from '@nsalaun/ng-logger';
+import { ActionsObservable } from 'redux-observable';
+
 import { DocumentExpressionsService } from '../../../../src/app/services/document-expressions.service';
+import { ExpressionService } from '../../../../src/app/services/expression.service';
+import { TemplateService } from '../../../../src/app/services/template.service';
+import { TemplateActions } from '../../../../src/app/store/actions/template-actions';
+import { TemplateEpics } from '../../../../src/app/store/middleware/template-epics';
+import { environment } from '../../../../src/environments/environment';
+import { TemplateMockService } from '../../services/mocks/template-mock.service';
 
 describe('Template epics', () => {
   beforeEach(() => {
@@ -22,7 +22,8 @@ describe('Template epics', () => {
         { provide: TemplateService, useClass: TemplateMockService },
         TemplateActions,
         TemplateEpics,
-        DocumentExpressionsService
+        DocumentExpressionsService,
+        ExpressionService
       ]
     });
   });

@@ -1,5 +1,5 @@
-import { Control } from './control';
 import { XmlClass } from '../../decorators/xml.decorators';
+import { Control } from './control';
 
 @XmlClass('form')
 export class Form {
@@ -11,7 +11,6 @@ export class Form {
     if (form) {
       this.id = form.id;
       this.title = form.title;
-      debugger
       this.controls = form.controls.map(c => c.deepCopy());
     }
   }

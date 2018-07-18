@@ -1,13 +1,14 @@
+import { NgReduxModule } from '@angular-redux/store';
 import { async, inject, TestBed } from '@angular/core/testing';
+import { HttpModule } from '@angular/http';
+import { NgLoggerModule } from '@nsalaun/ng-logger';
 
 import { DocumentExpressionsService } from '../../../src/app/services/document-expressions.service';
-import { NgReduxModule } from '@angular-redux/store';
-import { TemplateActions } from '../../../src/app/store/actions/template-actions';
-import { TemplateService } from '../../../src/app/services/template.service';
-import { NgLoggerModule } from '@nsalaun/ng-logger';
-import { environment } from '../../../src/environments/environment';
-import { HttpModule } from '@angular/http';
+import { ExpressionService } from '../../../src/app/services/expression.service';
 import { OfficeService } from '../../../src/app/services/office.service';
+import { TemplateService } from '../../../src/app/services/template.service';
+import { TemplateActions } from '../../../src/app/store/actions/template-actions';
+import { environment } from '../../../src/environments/environment';
 import { TemplateMockService } from './mocks/template-mock.service';
 
 describe('ExpressionsService', () => {
@@ -22,7 +23,8 @@ describe('ExpressionsService', () => {
         TemplateActions,
         { provide: TemplateService, useClass: TemplateMockService },
         DocumentExpressionsService,
-        OfficeService
+        OfficeService,
+        ExpressionService
       ]
     });
   });

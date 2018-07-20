@@ -173,6 +173,5 @@ export class AppModule {
     }
 
     this.init.initSLV();
-    this.init.initFormValues();
   }
 }

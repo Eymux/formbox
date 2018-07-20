@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Logger } from '@nsalaun/ng-logger';
 
 import { Textfield } from '../../data/forms/textfield';
-import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
 import { FormularGuiActions } from '../../store/actions/formular-gui-actions';
+import { FormularGuiBase } from '../formular-gui-base/formular-gui-base';
 
 @Component({
   selector: 'app-formular-gui-textfield',
@@ -17,6 +17,7 @@ export class FormularGuiTextfieldComponent extends FormularGuiBase<Textfield> {
   }
 
   onModelChange(text, ccid): void {
+    this.formGuiActions.saveValue(this.control.id, ccid, text);
     this.formGuiActions.updateContentControlText(text, ccid);
   }
 

@@ -69,9 +69,10 @@ export class RootEpic {
     this.slvEpics.deleting,
     this.slvEpics.printing,
     this.initEpics.initialisingSLV,
-    this.initEpics.initialisingFormValues,
     this.formularGuiEpics.updateingFormGuiValues,
     this.formularGuiEpics.updateingContentControlText,
+    this.formularGuiEpics.savingFormGuiValue,
+    this.formularGuiEpics.recalculating,
     this.slvEpics.insertingZuleitung,
     this.slvEpics.insertVerfuegungspunkt1
   )

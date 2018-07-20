@@ -25,38 +25,37 @@ export class FormularGuiService {
     return this.formdata.readValues();
   }
 
-  async updateFormGuiValues(form: Form): Promise<FormValue[]> {
-    const expr = jsonata('**[$exists(ccid)]');
-    const controls = expr.evaluate(form);
+  async saveFormValues(values: FormValue[]): Promise<void> {
+    return this.formdata.writeValues(values).then(() => Promise.resolve());
+  }
 
-    return Promise.all(
-      controls.map(control => {
-        return this.office.getContentControlText(control.ccid).then(text => {
-          return { id: control.id, ccid: control.ccid, value: text };
-        });
-      })).then((c: any) => {
-        const values: FormValue[] = [];
-        c.forEach(it => {
-          const v = new FormValue();
-          values.push(v);
-        });
-
-        return Promise.resolve(values);
-      });
+  async getFormGuiValues(): Promise<FormValue[]> {
+    return this.formdata.readValues();
   }
 
   async updateCCText(text: string, ccid: number): Promise<void> {
     return this.office.replaceTextInContentControl(ccid, text);
   }
 
-  async recalculate(form: Form): Promise<void> {
+  async recalculate(form: Form, values: FormValue[]): Promise<FormValue[]> {
+    let controls: { 'id': string, 'ccid': number, 'label': string, 'autofill': string }[] = [];
+
+    controls = values.map(it => {
+      debugger;
+      const jexpr = jsonata(`**[id=${it.id}].title`);
+      const label = jexpr.evaluate(form);
+
+      return { id: it.id, ccid: it.ccid, label: label, autofill: '' };
+    });
+
     const expr = jsonata('**[$exists(autofill) or $exists(value)][].\
         {"id": id, "ccid": ccid, "label": title, "autofill": autofill, "value": value}');
-    const controls: { 'id': number, 'ccid': number, 'label': string, 'autofill': string }[] = expr.evaluate(form);
+    controls = [...controls, ...expr.evaluate(form)];
     const results: { ccid: number, value: string }[] = this.expression.evaluate(controls);
 
-    return Promise.all(
-      results.map(it => this.updateCCText(it.value, it.ccid))
-    ).then(() => Promise.resolve());
+    return Promise.resolve([]);
+    //   return Promise.all(
+    //     results.map(it => this.updateCCText(it.value, it.ccid))
+    //   ).then(() => Promise.resolve());
+    // }
   }
-}

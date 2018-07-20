@@ -13,13 +13,20 @@ const actionCreator = actionCreatorFactory();
 @Injectable()
 export class FormularGuiActions {
   static FILL_VALUES = actionCreator.async<any, FormValue[]>('FILL_VALUES');
+  static SAVE_VALUE = actionCreator.async<{ id: string, ccid: number, value: string }, FormValue>('SAVE_VALUE');
   static UPDATE_CONTENT_CONTROL_TEXT = actionCreator<{ text: string, ccid: number }>('UPDATE_CONTENT_CONTROL_TEXT');
-  static RECALCULATE = actionCreator<any>('RECALCULATE');
+  static RECALCULATE = actionCreator.async<any, FormValue[]>('RECALCULATE');
 
   constructor(private ngRedux: NgRedux<FormularEditorState>) { }
 
   fillValues(): any {
     const action = FormularGuiActions.FILL_VALUES.started({});
+
+    return this.ngRedux.dispatch(action);
+  }
+
+  saveValue(id: string, ccid: number, value: string): any {
+    const action = FormularGuiActions.SAVE_VALUE.started({ id, ccid, value });
 
     return this.ngRedux.dispatch(action);
   }
@@ -31,7 +38,7 @@ export class FormularGuiActions {
   }
 
   recalculate(): any {
-    const action = FormularGuiActions.RECALCULATE({});
+    const action = FormularGuiActions.RECALCULATE.started({});
 
     return this.ngRedux.dispatch(action);
   }

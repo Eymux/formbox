@@ -52,15 +52,4 @@ export class InitEpics {
         });
       });
   }
-
-  initialisingFormValues = (action: ActionsObservable<any>) => {
-    return action.ofType(InitActions.INIT_FORMVALUES.started)
-      .mergeMap(() => {
-        return this.formgui.readFormValues().then(values => {
-          const act = InitActions.INIT_FORMVALUES.done({ params: {}, result: values });
-
-          return act;
-        })
-      });
-  }
 }
